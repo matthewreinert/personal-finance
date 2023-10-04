@@ -9,7 +9,7 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AccountService {
-  private accountsUrl = 'http://localhost:8080/accounts';
+  private accountsUrl = '/api/accounts';
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
