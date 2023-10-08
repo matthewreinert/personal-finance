@@ -1,14 +1,15 @@
 name: Java CI with Maven
-defaults:
-  run:
-    working-directory: ./api
-  
+ 
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'api/**'
   pull_request:
     branches: [ "main" ]
-
+    paths:
+      - 'api/**'
+      
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,7 +24,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B package --file api/pom.xml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
