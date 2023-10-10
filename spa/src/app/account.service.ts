@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Account } from './account';
-import { ACCOUNTS } from './mock-accounts';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -9,7 +8,7 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AccountService {
-  private accountsUrl = '/api/accounts';
+  accountsUrl = '/api/accounts';
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
