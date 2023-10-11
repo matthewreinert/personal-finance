@@ -2,28 +2,31 @@ package mjr.personalfinance.api.account;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AccountService {
+class AccountService {
 
-    @Autowired
-    private AccountRepository repository;
+    private final AccountRepository repository;
+    
+    AccountService(AccountRepository repository) {
+    	this.repository = repository;
+    }
 
-    public Account createAccount(Account account) {
+    Account createAccount(Account account) {
         return repository.save(account);
     }
 
-    public List<Account> getAllAccounts() {
+    List<Account> getAllAccounts() {
         return repository.findAll();
     }
 
-    public Account findById(Long accountId) {
-        return repository.findById(accountId).get();
+    Account findById(Long accountId) {
+        return repository.findById(accountId).orElseThrow(() -> new AccountNotFoundException(accountId));
+        
     }
 
-    public Account updateAccount(Long accountId, Account account) {
+    Account updateAccount(Long accountId, Account account) {
         return repository.findById(accountId).map(dbAccount -> {
             dbAccount.setName(account.getName());
             return repository.save(dbAccount);
@@ -33,7 +36,7 @@ public class AccountService {
         });
     }
 
-    public void deleteAccount(Long accountId) {
+    void deleteAccount(Long accountId) {
         repository.deleteById(accountId);
     }
 }
