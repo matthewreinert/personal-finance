@@ -14,7 +14,8 @@ on:
       - "spa/**"
   pull_request:
     branches: ["main"]
-
+    paths:
+      - "spa/**"
 jobs:
   build:
     runs-on: ubuntu-latest
