@@ -31,8 +31,9 @@ class AccountController {
     }
 
     @GetMapping
-    List<Account> getAllAccounts() {
-        return service.getAllAccounts();
+    Accounts getAllAccounts() {
+        List<Account> allAccounts = service.getAllAccounts();
+        return Accounts.builder().accounts(allAccounts).build();
     }
 
     @GetMapping("/{accountId}")

@@ -3,6 +3,7 @@ import { Account } from './account';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { Accounts } from './accounts';
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +25,10 @@ export class AccountService {
     );
   }
 
-  getAccounts(): Observable<Account[]> {
-    return this.http.get<Account[]>(this.accountsUrl)
+  getAccounts(): Observable<Accounts> {
+    return this.http.get<Accounts>(this.accountsUrl)
       .pipe(
-        catchError(this.handleError<Account[]>('getAccounts', []))
+        catchError(this.handleError<Accounts>('getAccounts', { accounts: [] }))
       );
   }
 
