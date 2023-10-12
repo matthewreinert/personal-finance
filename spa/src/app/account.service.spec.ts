@@ -5,6 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { AccountService } from './account.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Account } from './account';
+import { Accounts } from './accounts';
 
 describe('AccountService', () => {
   let httpClient: HttpClient;
@@ -36,14 +37,16 @@ describe('AccountService', () => {
 
 
   describe('#getAccounts', () => {
-    let expectedAccounts: Account[];
+    let expectedAccounts: Accounts;
 
     beforeEach(() => {
       accountService = TestBed.inject(AccountService);
-      expectedAccounts = [
-        { id: 1, name: 'A' },
-        { id: 2, name: 'B' },
-      ] as Account[];
+      expectedAccounts = {
+        accounts: [
+          { id: 1, name: 'A' },
+          { id: 2, name: 'B' },
+        ]
+      } as Accounts;
     });
 
     it('should return expected accounts (called once)', () => {
@@ -64,19 +67,19 @@ describe('AccountService', () => {
     it('should be OK returning no accounts', () => {
 
       accountService.getAccounts().subscribe({
-        next: accounts => expect(accounts.length).toEqual(0, 'should have empty accounts array'),
+        next: accounts => expect(accounts.accounts.length).toEqual(0, 'should have empty accounts array'),
         error: fail,
       });
 
       const req = httpTestingController.expectOne(accountService.accountsUrl);
-      req.flush([]); // Respond with no accounts
+      req.flush({ accounts: [] }); // Respond with no accounts
     });
 
     // This service reports the error but finds a way to let the app keep going.
     it('should turn 404 into an empty accounts result', () => {
 
       accountService.getAccounts().subscribe({
-        next: accounts => expect(accounts.length).toEqual(0, 'should return empty accounts array'),
+        next: accounts => expect(accounts.accounts.length).toEqual(0, 'should return empty accounts array'),
         error: fail,
       });
 
