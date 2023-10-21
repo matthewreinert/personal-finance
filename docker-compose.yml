@@ -1,20 +1,36 @@
 version: "3.9"
 services:
   api:
-    image: matthewreinert/personal-finance-api
+    image: matthewreinert/personal-finance-apis:latest
     container_name: api
-    build:
-      context: ./api
     environment:
       - SERVER_PORT=80
+    extra_hosts: [ 'host.docker.internal:host-gateway' ]
     ports:
       - "9000:80"
-  spa:
-    image: matthewreinert/personal-finance-spa
-    container_name: spa
-    build:
-      context: ./spa
+  ui:
+    image: matthewreinert/personal-finance-ui:latest
+    container_name: ui
     ports:
       - "4200:80"
     depends_on:
-      - api  
+      - api
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    extra_hosts: [ 'host.docker.internal:host-gateway' ]
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - 9090:9090
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    extra_hosts: [ 'host.docker.internal:host-gateway' ]
+    restart: unless-stopped
+    volumes:
+      - ./docker/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+    ports:
+      - 3000:3000
